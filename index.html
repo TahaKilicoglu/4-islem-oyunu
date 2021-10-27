@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javascript Dört İşlem Oyunu</title>
+    <style>
+        body{
+        font-family: Verdana, monospace, sans-serif;
+        font-size: 12px;
+        font-weight: bold;
+        min-height: 800px;
+        text-align: center;
+        }
+        #game  {
+             width: 400px;
+             height: 200px;
+             padding: 20px;
+             background-color: #000;
+             position: absolute;
+             top: 50%;
+             left: 50%;
+             margin-left: -200px;
+             margin-top: -185px;
+                }
+        h1{
+        margin: 0 0 18px 0;  
+        border: solid 1px #000;
+        padding: 5px;
+        font-weight: 400; 
+        background-color: #fff;
+        color:#0d0e0c; 
+        }
+        span{
+            font-size: 125%;
+            padding: 12px;
+            color: #fff;
+        }
+        #result{
+            width: 90px;
+            height: 20px;
+        }
+        #answer {
+            margin-top: 10px;
+            padding: 5px;
+            border: none;
+            width: 60px;
+            background-color: #0691ee;
+            color: rgb(14, 18, 58);
+        }
+        #answer:hover {
+            background: rgb(218, 152, 9);
+        }
+        #True, #False {
+            font-size: 150%;
+            margin-top: 30px;
+            padding: 15px;
+            display: inline-block;
+            width: 20px;
+            
+        }
+        #True {
+            background: rgb(200,255,0);
+            text-align:center;
+        }
+        #False {
+            background: rgb(250,0,0);
+        }
+    </style>
+</head>
+<body>
+    
+<div id="game">
+    <h1>Dört İşlem Oyunu</h1>
+    <span id="Number1">0</span>
+    <span id="Operator">*</span>
+    <span id="Number2">0</span>
+    <span>=</span>
+    <input type="text" id="result">
+    <input type="button" id="answer" value="Cevapla">
+    <div style="clear: both;"></div>
+    <div id="True">0</div>
+    <div id="False">0</div>
+    <div style="clear: both;"></div>
+</div>
+
+    <script>
+        //Bildirimler yapılıyor
+        var Number1, Number2, Operator, result, answer, True=0, False=0;
+        //HTML nesnelerine ulaşma
+        Number1=document.getElementById('Number1');
+        Number2=document.getElementById('Number2');
+        Operator=document.getElementById('Operator');
+        result=document.getElementById('result');
+        answer=document.getElementById('answer');
+        True=document.getElementById('True');
+        False=document.getElementById('False');
+        //rastgele sayı üretme fonksiyonu
+        function RandomNumber (min,max){
+            var number=Math.floor(Math.random()*(max-min)+min);
+            return number;
+        }
+
+        //Oyun başlangıcında veya soru tahmini sonrası yeni soru oluşturma fonksiyonu
+        function newQuestion (){
+            var operation=["+","-","/","*"];
+            Operator.textContent=operation[RandomNumber(0,4)]; //Operatör Seçimi
+            Number1.textContent=RandomNumber(0,50);
+            Number2.textContent=RandomNumber(0,50);
+            //Kalansız bölme işlemi yapacak koşul
+            if(Operator.textContent=="/"){
+                while(true){
+                    Number2.textContent=RandomNumber(0,50);
+                    if(Number1.textContent%Number2.textContent==0){
+                        break;
+                    }
+                }
+            }
+        }
+    
+        window.onload=function(){
+            newQuestion();
+        }
+        //Cevapla butonuna basıldığında değerlendirme işlemi yapma
+        answer.onclick=function(){
+            var ans,n1,n2;
+            n1=Number(Number1.textContent);
+            n2=Number(Number2.textContent);
+            switch(Operator.textContent){
+                case '+':ans=n1+n2;break;
+                case '-':ans=n1-n2;break;
+                case '/':ans=n1/n2;break;
+                case '*':ans=n1*n2;break;
+                default:break;
+            }
+            if(result.value==ans){
+                True.textContent=Number(True.textContent)+1;
+            }
+            else{
+                False.textContent=Number(False.textContent)+1;
+                } 
+                newQuestion();
+        }
+
+    </script>
+
+</body>
+</html>
